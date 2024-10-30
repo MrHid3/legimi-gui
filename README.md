@@ -6,6 +6,7 @@
 - [ ] rewrite the backend in C++
 - [ ] create GUI
 - [ ] send books directly to kindle
-- [ ] store login and password in something else then plain text 
+- [ ] store login and password in something else then plain text
+- [ ] multithreaded book download
 
 #### **I am not affiliated with legimi in any way**
