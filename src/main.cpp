@@ -1,9 +1,12 @@
 #include <any>
+#include <iostream>
 #include <vector>
 
 #include "string"
 #include "cstdint"
+#include <cpr/cpr.h>
 
+std::string apiURL = "https://app.legimi.pl/svc/sync/core.aspx";
 using readOp = int8_t;
 
 class Account {
@@ -59,17 +62,11 @@ struct Buffer {
 };
 
 void Exchange(Request request, Response response) {
-    Buffer* buf = new Buffer();
-
-};
-
-struct DefaultClient {
-    bool debugOn;
-    void debug(std::any value) {
-        if (this->debugOn) {
-
-        }
-    }
+    cpr::Response r = cpr::Post(cpr::Url(apiURL), cpr::Authentication{"user", "pass", cpr::AuthMode::BASIC},
+                      cpr::Parameters{{"anon", "true"}, {"key", "value"}});
+    std::cout << r.status_code;
+    r.header["content-type"];
+    r.text;
 };
 
 struct loginData {
@@ -84,7 +81,6 @@ struct GetSession {
 
 struct defaultAccountService {
     Account accountRepository;
-
 };
 
 // encoder (encode.go)
@@ -92,5 +88,5 @@ struct defaultAccountService {
 
 
 int main() {
-
+    Exchange(Request{}, Response{});
 }
