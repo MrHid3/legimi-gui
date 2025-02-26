@@ -1,10 +1,10 @@
 #include <any>
 #include <iostream>
 #include <vector>
-
 #include "string"
 #include "cstdint"
-#include <cpr/cpr.h>
+// #include <httprequest.h>
+#include <winsock2.h>
 
 std::string apiURL = "https://app.legimi.pl/svc/sync/core.aspx";
 using readOp = int8_t;
@@ -61,13 +61,11 @@ struct Buffer {
     readOp lastRead;
 };
 
-void Exchange(Request request, Response response) {
-    cpr::Response r = cpr::Post(cpr::Url(apiURL), cpr::Authentication{"user", "pass", cpr::AuthMode::BASIC},
-                      cpr::Parameters{{"anon", "true"}, {"key", "value"}});
-    std::cout << r.status_code;
-    r.header["content-type"];
-    r.text;
-};
+// void Exchange(Request request, Response response) {
+//     http::Request r{apiURL};
+//     const auto rs  = r.send("GET");
+//     std::cout << std::string{rs.body.begin(), rs.body.end()} << '\n';
+// };
 
 struct loginData {
     std::string login;
@@ -75,7 +73,7 @@ struct loginData {
 };
 
 struct GetSession {
-    loginData;
+    loginData loginData;
     uint64_t kindleID;
 };
 
@@ -88,5 +86,17 @@ struct defaultAccountService {
 
 
 int main() {
-    Exchange(Request{}, Response{});
+    // Exchange(Request{}, Response{});
+    WSADATA wsaData;
+
+    int result = WSAStartup( MAKEWORD( 2, 2 ), & wsaData );
+    if( result != NO_ERROR )
+        printf( "Initialization error.\n" );
+    SOCKET mainSocket = socket( AF_INET, SOCK_STREAM, IPPROTO_TCP );
+    if( mainSocket == INVALID_SOCKET )
+    {
+        printf( "Error creating socket: %ld\n", WSAGetLastError() );
+        WSACleanup();
+        return 1;
+    }
 }
